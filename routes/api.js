@@ -1,11 +1,16 @@
 const express = require("express");
-
 const router = express.Router();
 
-router.get("/friends", (req, res, next) => {
-  res.json({
-    friends: ["Ali Raza", "Usman Ahmed", "Jamal Sabir", "Arslan Ali"],
-  });
-});
+const postController = require("../controllers/postController");
+
+router.get("/posts", postController.getAll);
+
+router.get("/post/:postId", postController.getOne);
+
+router.post("/post/create", postController.create);
+
+router.put("/post/update", postController.update);
+
+router.delete("/post/delete", postController.delete);
 
 module.exports = router;
