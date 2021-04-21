@@ -5,13 +5,24 @@ dotenv.config({
 });
 const express = require("express");
 const mongoose = require("mongoose");
-const bodyParser = require("body-parser");;
+const bodyParser = require("body-parser");
+const multer = require("multer");
 
 const routes = require("./routes/api");
 
 const app = express();
 
-app.use(bodyParser.json());;
+const fileStorage = multer.diskStorage({
+  filename: function (req, file, callback) {
+    callback(null, file.originalname);
+  },
+  destination: function (req, file, callback) {
+    callback(null, "images");
+  },
+});
+
+app.use(bodyParser.json());
+app.use(multer({ storage: fileStorage }).single("image"));
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");

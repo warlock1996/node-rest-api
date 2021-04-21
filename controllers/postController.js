@@ -1,4 +1,6 @@
 const Post = require("../models/Post");
+const path = require("path");
+const { validationResult } = require("express-validator");
 
 exports.getAll = (req, res, next) => {
   Post.find({}).then((posts) => {
@@ -26,11 +28,22 @@ exports.getOne = (req, res, next) => {
 };
 
 exports.create = (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.json({
+      success: false,
+      errors: errors.array().map(({ param, msg }) => {
+        return { [param]: msg };
+      }),
+    });
+  }
+
   const post = new Post({
     title: req.body.title,
     content: req.body.content,
-    image: req.body.image,
+    image: req.file.path,
   });
+
   post.save().then((post) => {
     res.json({
       success: true,
