@@ -22,7 +22,7 @@ const fileStorage = multer.diskStorage({
 });
 
 app.use(bodyParser.json());
-app.use(multer({ storage: fileStorage }).single("image"));
+app.use(multer({ storage: fileStorage }).single("imageUrl"));
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -31,7 +31,12 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use("/feed", routes);
+app.use((err, req, res, next) => {
+  console.log(err);
+  next();
+});
+
+app.use(routes);
 
 mongoose
   .connect(process.env.DB_URL, {

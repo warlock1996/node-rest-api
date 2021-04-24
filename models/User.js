@@ -1,21 +1,20 @@
 const mongoose = require("mongoose");
 
-const Post = new mongoose.Schema({
-  title: {
+const User = new mongoose.Schema({
+  name: {
     type: String,
     required: true,
   },
-  content: {
+  email: {
     type: String,
     required: true,
   },
-  imageUrl: {
+  password: {
     type: String,
     required: true,
   },
-  creator: {
-    type: { name: String },
-    required: true,
+  token: {
+    type: String,
   },
   createdAt: {
     type: Date,
@@ -23,4 +22,4 @@ const Post = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("Post", Post);
+module.exports = mongoose.model("User", User);

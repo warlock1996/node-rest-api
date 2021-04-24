@@ -38,10 +38,15 @@ exports.create = (req, res, next) => {
     });
   }
 
+  // find creator by reading the jwt
+  const creator = "";
+
   const post = new Post({
     title: req.body.title,
     content: req.body.content,
-    image: req.file.path,
+    imageUrl: req.file.path,
+    creator: creator,
+    createdAt: Date.now(),
   });
 
   post.save().then((post) => {
