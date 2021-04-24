@@ -74,7 +74,7 @@ exports.login = (req, res, next) => {
         {
           subject: "TOKEN",
           notBefore: 0,
-          expiresIn: 600,
+          expiresIn: 60,
           algorithm: "HS256",
         },
         (err, token) => {
