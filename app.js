@@ -5,13 +5,24 @@ dotenv.config({
 });
 const express = require("express");
 const mongoose = require("mongoose");
-const bodyParser = require("body-parser");;
+const bodyParser = require("body-parser");
+const multer = require("multer");
 
 const routes = require("./routes/api");
 
 const app = express();
 
-app.use(bodyParser.json());;
+const fileStorage = multer.diskStorage({
+  filename: function (req, file, callback) {
+    callback(null, file.originalname);
+  },
+  destination: function (req, file, callback) {
+    callback(null, "images");
+  },
+});
+
+app.use(bodyParser.json());
+app.use(multer({ storage: fileStorage }).single("imageUrl"));
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -20,7 +31,12 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use("/feed", routes);
+app.use((err, req, res, next) => {
+  console.log(err);
+  next();
+});
+
+app.use(routes);
 
 mongoose
   .connect(process.env.DB_URL, {

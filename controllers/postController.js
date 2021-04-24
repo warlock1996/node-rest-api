@@ -1,4 +1,6 @@
 const Post = require("../models/Post");
+const path = require("path");
+const { validationResult } = require("express-validator");
 
 exports.getAll = (req, res, next) => {
   Post.find({}).then((posts) => {
@@ -26,11 +28,27 @@ exports.getOne = (req, res, next) => {
 };
 
 exports.create = (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.json({
+      success: false,
+      errors: errors.array().map(({ param, msg }) => {
+        return { [param]: msg };
+      }),
+    });
+  }
+
+  // find creator by reading the jwt
+  const creator = "";
+
   const post = new Post({
     title: req.body.title,
     content: req.body.content,
-    image: req.body.image,
+    imageUrl: req.file.path,
+    creator: creator,
+    createdAt: Date.now(),
   });
+
   post.save().then((post) => {
     res.json({
       success: true,
