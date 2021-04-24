@@ -10,6 +10,7 @@ module.exports = (req, res, next) => {
   }
 
   const bearerToken = req.headers.authorization.trim().split(" ")[1];
+
   jwt.verify(
     bearerToken,
     process.env.JWT_SECRET,
