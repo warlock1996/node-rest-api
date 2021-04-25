@@ -6,18 +6,12 @@ const User = require("../models/User");
 const postController = require("../controllers/postController");
 const userController = require("../controllers/userController");
 const auth = require("../middleware/auth");
-const { min } = require("../validation");
 
-router.get("/posts", auth, postController.getAll);
+router.get("/posts", postController.getAll);
 
-router.get("/post/:postId", auth, postController.getOne);
+router.get("/post/:postId", postController.getOne);
 
-router.post(
-  "/post/create",
-  auth,
-  [min("title", 3), min("content", 20)],
-  postController.create
-);
+router.post("/post/create", auth, postController.create);
 
 router.put("/post/update", auth, postController.update);
 
@@ -70,7 +64,7 @@ router.post(
 // fallback handler
 router.all("*", (req, res, next) => {
   res.json({
-    message: "route doesnt exists !",
+    message: "route doesnt exists !, dont wander around...",
   });
 });
 

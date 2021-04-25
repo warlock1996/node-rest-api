@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const ObjectId = require("mongoose").Types.ObjectId;
 
 module.exports = (req, res, next) => {
   if (!req.headers.authorization) {
@@ -22,6 +23,8 @@ module.exports = (req, res, next) => {
           message: err.message,
         });
       }
+      // save user _id to current request
+      req.userId = new ObjectId(decoded._id);
       next();
     }
   );

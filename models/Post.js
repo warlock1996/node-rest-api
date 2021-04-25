@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { ObjectId } = mongoose.Schema.Types;
 
 const Post = new mongoose.Schema({
   title: {
@@ -13,10 +14,7 @@ const Post = new mongoose.Schema({
     type: String,
     required: true,
   },
-  creator: {
-    type: { name: String },
-    required: true,
-  },
+  creator: { type: ObjectId, ref: "User", required: true },
   createdAt: {
     type: Date,
     required: true,

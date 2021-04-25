@@ -13,9 +13,6 @@ const User = new mongoose.Schema({
     type: String,
     required: true,
   },
-  token: {
-    type: String,
-  },
   createdAt: {
     type: Date,
     required: true,
