@@ -7,9 +7,9 @@ const postController = require("../controllers/postController");
 const userController = require("../controllers/userController");
 const auth = require("../middleware/auth");
 
-router.get("/posts", auth, postController.getAll);
+router.get("/posts", postController.getAll);
 
-router.get("/post/:postId", auth, postController.getOne);
+router.get("/post/:postId", postController.getOne);
 
 router.post("/post/create", auth, postController.create);
 
