@@ -18,7 +18,6 @@ exports.signup = (req, res, next) => {
     name: req.body.name,
     email: req.body.email,
     password: req.body.password,
-    token: null,
     createdAt: Date.now(),
   });
 
@@ -67,6 +66,7 @@ exports.login = (req, res, next) => {
 
       jwt.sign(
         {
+          _id: user._id,
           name: user.name,
           email: user.email,
         },
@@ -74,8 +74,8 @@ exports.login = (req, res, next) => {
         {
           subject: "TOKEN",
           notBefore: 0,
-          expiresIn: 60,
-          algorithm: "HS256",
+          expiresIn: Number(process.env.JWT_EXPIRES_SEC),
+          algorithm: process.env.JWT_ALGO,
         },
         (err, token) => {
           if (err) {
@@ -83,16 +83,11 @@ exports.login = (req, res, next) => {
               message: "Server Error !",
             });
           }
-          user.token = token;
-          user.save().then((user) => {
-            res.json({
-              success: true,
-              data: {
-                name: user.name,
-                email: user.email,
-                token: user.token,
-              },
-            });
+          return res.json({
+            success: true,
+            data: {
+              token: token,
+            },
           });
         }
       );

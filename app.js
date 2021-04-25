@@ -14,7 +14,7 @@ const app = express();
 
 const fileStorage = multer.diskStorage({
   filename: function (req, file, callback) {
-    callback(null, file.originalname);
+    callback(null, Date.now() + file.originalname);
   },
   destination: function (req, file, callback) {
     callback(null, "images");
