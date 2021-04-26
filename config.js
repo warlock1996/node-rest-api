@@ -37,3 +37,7 @@ module.exports.getSocket = () => {
 
   return socket;
 };
+
+module.exports.sum = (a, b) => {
+  return a + b;
+};
