@@ -7,6 +7,7 @@ const multer = require("multer");
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+const { connect, getSocket } = require("./config");
 
 const routes = require("./routes/api");
 const { fileConfig, accessControlHeaders, errorHandler } = require("./config");
@@ -26,8 +27,13 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => {
-    app.listen(process.env.PORT, () => {
+    const httpserver = app.listen(process.env.PORT, () => {
       console.log(`Server is running at ${process.env.PORT}`);
+    });
+    connect(httpserver);
+    const socket = getSocket();
+    socket.on("connection", () => {
+      console.log("Connected !");
     });
   })
   .catch((err) => {

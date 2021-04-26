@@ -3,6 +3,8 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const { validationResult } = require("express-validator");
 
+const { getSocket } = require("../config");
+
 exports.signup = async (req, res, next) => {
   try {
     const errors = validationResult(req);
@@ -27,6 +29,11 @@ exports.signup = async (req, res, next) => {
         data: user,
       });
     }
+
+    const socket = getSocket();
+
+    socket.emit("signup", { email: user.email });
+
     res.json({
       success: true,
       message: "successfully registered !",
