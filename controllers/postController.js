@@ -6,7 +6,7 @@ const { validationResult } = require("express-validator");
 exports.getAll = async (req, res, next) => {
   try {
     const posts = await Post.find({});
-    res.json({
+    res.status(200).json({
       success: true,
       data: posts,
     });
